@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+.venv
+*.csv
+audit.py
+test_model.py
+yakuniy_test.py
+.VSCode/
+.idea/
+*.log

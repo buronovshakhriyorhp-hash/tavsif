@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Tahlil - NetUserClassify{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4 animate-fade-in">
+    <div class="col-md-8 col-lg-7">
+
+        <div id="server-error-alert" class="alert alert-danger border-0 shadow-sm rounded-3 d-none mb-4" role="alert">
+            <i class="fas fa-circle-xmark me-2"></i><span id="server-error-msg"></span>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-primary text-white text-center py-4 rounded-top-4 border-0">
+                <!-- Original Text Exact -->
+                <h3 class="mb-0 fw-bold">📂 Web Loglarni Yuklash</h3>
+            </div>
+            <div class="card-body p-5">
+                <!-- Original Text Exact -->
+                <p class="text-muted text-center mb-4 fs-6">
+                    Iltimos, web kirish loglarini o'z ichiga olgan CSV faylni yuklang. Fayl quyidagi ustunlarga ega bo'lishi kerak: <code class="bg-light text-primary px-2 py-1 rounded">timestamp, ip, method, path, status, user_agent</code>.
+                </p>
+
+                <div id="error-alert" class="alert alert-warning border-0 shadow-sm rounded-3 d-none" role="alert"></div>
+
+                <form id="upload-form" novalidate>
+                    <div class="mb-4 text-center">
+                        <label for="csvFile" class="form-label d-block rounded-3 bg-light border border-2 border-dashed p-5 cursor-pointer hover-lift">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i><br>
+                            <span class="fs-5 fw-semibold text-secondary">CSV Faylni Tanlang</span>
+                        </label>
+                        <input class="form-control d-none" type="file" id="csvFile" accept=".csv" aria-describedby="fileHelp">
+                        <div id="fileNameDisplay" class="mt-3 fw-bold text-success d-none"></div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg w-100 py-3 shadow border-0 fw-bold rounded-3">
+                        <span id="btn-idle">
+                            <i class="fas fa-rocket me-2"></i>Tahlilni Boshlash
+                        </span>
+                        <span id="btn-loading" class="d-none">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            <!-- Original Text loading exact -->
+                            Loglar qayta ishlanmoqda va foydalanuvchilar tasniflanmoqda...
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Show selected file name logic
+document.getElementById('csvFile').addEventListener('change', function(e) {
+    const display = document.getElementById('fileNameDisplay');
+    if(this.files && this.files.length > 0) {
+        display.innerHTML = `<i class="fas fa-check-circle me-1"></i> Tanlandi: ${this.files[0].name}`;
+        display.classList.remove('d-none');
+    } else {
+        display.classList.add('d-none');
+    }
+});
+
+document.getElementById('upload-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const fileInput   = document.getElementById('csvFile');
+    const errorAlert  = document.getElementById('error-alert');
+    const serverAlert = document.getElementById('server-error-alert');
+    const submitBtn   = document.getElementById('submit-btn');
+    const btnIdle     = document.getElementById('btn-idle');
+    const btnLoading  = document.getElementById('btn-loading');
+
+    errorAlert.classList.add('d-none');
+    serverAlert.classList.add('d-none');
+
+    if (!fileInput.files || fileInput.files.length === 0) {
+        showClientError('<i class="fas fa-triangle-exclamation me-2"></i>Iltimos, avval CSV fayl tanlang!');
+        return;
+    }
+
+    const file = fileInput.files[0];
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+        showClientError(`<i class="fas fa-triangle-exclamation me-2"></i>Noto'g'ri fayl: <strong>${file.name}</strong>. Faqat <code>.csv</code> qabul qilinadi.`);
+        fileInput.value = '';
+        document.getElementById('fileNameDisplay').classList.add('d-none');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    btnIdle.classList.add('d-none');
+    btnLoading.classList.remove('d-none');
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch('/api/analyze', { method: 'POST', body: formData });
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.detail || "Noma'lum server xatoligi yuz berdi.");
+
+        sessionStorage.setItem('analysisResults', JSON.stringify(data));
+        window.location.href = '/results';
+
+    } catch (error) {
+        document.getElementById('server-error-msg').textContent = error.message;
+        serverAlert.classList.remove('d-none');
+        serverAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+        submitBtn.disabled = false;
+        btnIdle.classList.remove('d-none');
+        btnLoading.classList.add('d-none');
+    }
+});
+
+function showClientError(html) {
+    const el = document.getElementById('error-alert');
+    el.innerHTML = html;
+    el.classList.remove('d-none');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+<style>
+/* Added nice dashed border for file input */
+.border-dashed { border-style: dashed !important; border-color: #adb5bd !important; transition: all 0.2s;}
+.border-dashed:hover { border-color: #0d6efd !important; background-color: #f8f9fa !important; }
+.cursor-pointer { cursor: pointer; }
+</style>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Loyiha Haqida - Foydalanuvchi Tasnifi{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4 animate-fade-in">
+    <div class="col-lg-9">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-5">
+
+                <!-- Title + Diplom badge (original) -->
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark lh-base">
+                        Internet Foydalanuvchilarini Tasniflash uchun<br>
+                        Web-Dasturiy Ta'minotni Ishlab Chiqish
+                    </h2>
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-4 py-2 mt-3 fs-6">
+                        <i class="fas fa-graduation-cap me-2"></i>🎓 Diplom Loyihasi
+                    </span>
+                    <hr class="w-25 mx-auto mt-4" style="height:3px;border:none;background:linear-gradient(90deg,#0d6efd,#6ea8fe);border-radius:5px;">
+                </div>
+
+                <!-- Intro paragraph (original text) -->
+                <p class="lead text-secondary text-center mb-5" style="line-height:1.85;">
+                    Ushbu dasturiy tizim diplom ishi doirasida ishlab chiqilgan. Uning asosiy maqsadi kiberxavfsizlik va foydalanuvchi xatti-harakatlarini tahlil qilish sohasida Mashina O'rganish (Machine Learning) algoritmlarini qo'llashni namoyish etishdir.
+                </p>
+
+                <!-- ── Metodologiya ── -->
+                <div class="p-4 bg-light rounded-4 border-start border-4 border-primary mb-4">
+                    <h4 class="fw-bold text-dark mb-3">
+                        <i class="fas fa-microscope me-2 text-primary"></i>🔬 Metodologiya
+                    </h4>
+                    <p class="text-muted mb-4">
+                        Tizim foydalanuvchilarni web kirish loglari asosida to'rtta toifaga ajratish uchun Random Forest (Tasodifiy O'rmon) algoritmidan foydalanadi.
+                    </p>
+
+                    <!-- 4 classification cards (original text) -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-3 border-success">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-bold text-success mb-1">
+                                        <i class="fas fa-user-check me-2"></i>Normal (Oddiy)
+                                    </h6>
+                                    <p class="text-muted small mb-0">
+                                        Odatiy ko'rish xatti-harakati, o'rtacha so'rovlar tezligi, kamdan-kam xatolar.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-3 border-primary">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-bold text-primary mb-1">
+                                        <i class="fas fa-bolt me-2"></i>Active (Faol)
+                                    </h6>
+                                    <p class="text-muted small mb-0">
+                                        Yuqori foydalanish chastotasi, tez o'zaro ta'sir, qonuniy yo'llar.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-3 border-warning">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-bold mb-1" style="color:#b45309;">
+                                        <i class="fas fa-robot me-2"></i>Bot (Robot)
+                                    </h6>
+                                    <p class="text-muted small mb-0">
+                                        Juda yuqori so'rov tezligi, past interval o'zgaruvchanligi, doimiy User-Agent.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-3 border-danger">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-bold text-danger mb-1">
+                                        <i class="fas fa-user-secret me-2"></i>Attacker (Hujumchi)
+                                    </h6>
+                                    <p class="text-muted small mb-0">
+                                        Maxfiy yo'llarni skanerlash, yuqori 404/403 xatolar darajasi, tez-tez o'zgarib turadigan User-Agent.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Axloqiy Mulohazalar ── (original full text from audit) -->
+                <div class="p-4 bg-light rounded-4 border-start border-4 border-warning mb-4">
+                    <h4 class="fw-bold text-dark mb-3">
+                        <i class="fas fa-shield-halved me-2 text-warning"></i>🛡️ Axloqiy Mulohazalar
+                    </h4>
+                    <p class="text-muted mb-0">
+                        Birinchi navbatda maxfiylik: Ushbu tizim anonimlashtirilgan log ma'lumotlari bilan ishlashga mo'ljallangan. IP manzillar faqat sessiyalarni guruhlash uchun ishlatiladi va shaxsiy ma'lumotlar saqlanmaydi. Tizim faqat huquqiy va ruxsat etilgan muhitlarda qo'llanilishi kerak.
+                    </p>
+                </div>
+
+                <!-- ── Texnologiyalar ── (original text) -->
+                <div class="p-4 bg-light rounded-4 border-start border-4 border-success">
+                    <h4 class="fw-bold text-dark mb-4">
+                        <i class="fas fa-tools me-2 text-success"></i>🛠️ Texnologiyalar
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-3 p-2 flex-shrink-0">
+                                    <i class="fab fa-python text-primary fs-4"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-dark d-block mb-1">Backend:</strong>
+                                    <span class="text-muted small">Python, FastAPI, Pandas, Scikit-Learn</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-3 p-2 flex-shrink-0">
+                                    <i class="fab fa-bootstrap text-warning fs-4"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-dark d-block mb-1">Frontend:</strong>
+                                    <span class="text-muted small">HTML5, Bootstrap 5, Chart.js</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-3 p-2 flex-shrink-0">
+                                    <i class="fas fa-server text-success fs-4"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-dark d-block mb-1">Arxitektura:</strong>
+                                    <span class="text-muted small">Yagona kirish nuqtasiga ega monolit web-ilova</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Author footer -->
+                <div class="text-center mt-5 pt-4 border-top">
+                    <p class="text-muted mb-0">
+                        Loyiha Muallifi: <span class="fw-bold text-dark">Mehri Qurbonova</span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

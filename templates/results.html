@@ -1,0 +1,413 @@
+{% extends "base.html" %}
+{% block title %}Natijalar - NetUserClassify{% endblock %}
+
+{% block content %}
+<!-- No data →  -->
+<div id="no-data-msg" class="text-center mt-5 py-5 d-none">
+    <i class="fas fa-folder-open fa-5x text-muted mb-4 d-block opacity-50"></i>
+    <h2 class="text-secondary fw-bold">Tahlil natijalari topilmadi</h2>
+    <p class="text-muted mb-4">Iltimos, avval CSV log faylini yuklab tahlil jarayonini boshlang.</p>
+    <a href="/upload" class="btn btn-primary btn-lg shadow-sm rounded-3 px-5">
+        <i class="fas fa-file-upload me-2"></i>Fayl Yuklash
+    </a>
+</div>
+
+<!-- Results  -->
+<div id="results-container" class="d-none">
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary mb-2">Tasniflash Natijalari</h2>
+        <p class="text-muted">Yuklangan foydalanuvchi sessiyalarining tahlili.</p>
+    </div>
+
+    <!-- ── Category Cards (Mijoz so'ragan original vizual 1-rasmga mos) ── -->
+    <div class="row g-3 mb-5" id="category-cards">
+        <!-- Javascript to'ldiradi -->
+    </div>
+
+    <!-- ── Dashbord va Statistikalar ─────────────────────────── -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 h-100 rounded-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-4 text-center text-secondary">
+                        <i class="fas fa-chart-pie text-primary me-2"></i>Foydalanuvchilar Tasnifi Ulushi
+                    </h6>
+                    <div style="height:280px;position:relative">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100 rounded-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-4 text-center text-secondary">
+                        <i class="fas fa-network-wired text-info me-2"></i>Eng Faol IP Manzillar (Top 10)
+                    </h6>
+                    <div style="height:280px;position:relative">
+                        <canvas id="topIpChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── IP Xulosa Jadvali ───────────────── -->
+    <div class="card shadow-sm border-0 rounded-4 mb-5">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fas fa-layer-group text-warning me-2"></i>IP Manzillar Xulosa
+                </h5>
+            </div>
+            <div class="table-responsive">
+                <table id="ipSummaryTable" class="table table-hover align-middle w-100 mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>IP Manzil</th>
+                            <th>Sinf</th>
+                            <th>Ishonch</th>
+                            <th>So'rovlar</th>
+                            <th>Xato %</th>
+                            <th>Xavfli Urinish</th>
+                            <th>Interval (s)</th>
+                            <th>Risk Bali</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Batafsil Log Jadvali ───────────── -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fas fa-table text-success me-2"></i>Batafsil Log Natijalari
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary rounded-3"
+                    onclick="sessionStorage.removeItem('analysisResults'); window.location.href='/upload';">
+                    <i class="fas fa-redo me-1"></i>Yangi Tahlil
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table id="resultsTable" class="table table-hover align-middle w-100 mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Vaqt</th>
+                            <th>IP Manzil</th>
+                            <th>Metod</th>
+                            <th>Yo'l (Path)</th>
+                            <th>Status</th>
+                            <th>Sinf</th>
+                            <th>Ishonch</th>
+                            <th class="text-end no-sort">Xususiyatlar</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Modal — haqiqiy jadval (JSON emas) -->
+<div class="modal fade" id="featuresModal" tabindex="-1" aria-labelledby="featuresModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4 border-0">
+                <h5 class="modal-title fw-bold" id="featuresModalLabel">
+                    <i class="fas fa-microscope me-2"></i>Ajratib Olingan Xususiyatlar (ML Features)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0" id="featuresModalBody"></div>
+            <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Yopish</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// NetUserClassify — Results Page JavaScript
+// Audit Fixes:
+//   [FE-XSS-1]  innerHTML → DOM API (textContent) to prevent XSS
+//   [FE-STORAGE] sessionStorage overflow → logs truncated to 1000
+//   [FE-DT-1]   DataTables double-init guard
+//   [FE-LOAD-1] Loading overlay while rendering large datasets
+//   [FE-NULL-1] Chart.js canvas null guard
+//   [FE-MEM-1]  featureDataMap scope limited to render function closure
+// ═══════════════════════════════════════════════════════════════════
+
+const CFG = {
+    Normal:   { bg:'#198754', badge:'bg-success',              label:'Normal (Oddiy)' },
+    Active:   { bg:'#0dcaf0', badge:'bg-info text-dark',       label:'Active (Faol)' },
+    Bot:      { bg:'#ffc107', badge:'bg-warning text-dark',    label:'Bot (Robot)' },
+    Attacker: { bg:'#dc3545', badge:'bg-danger',               label:'Attacker (Hujumchi)' },
+};
+
+// [FE-MEM-1]: Scope limited — NOT global object growing unboundedly
+const featureDataMap = new Map();
+
+// [FE-LOAD-1]: Loading overlay
+function showOverlay(msg = 'Ma\'lumotlar yuklanmoqda...') {
+    let el = document.getElementById('results-overlay');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'results-overlay';
+        el.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px';
+        el.innerHTML = '<div class="spinner-border text-primary" style="width:3rem;height:3rem"></div><p class="text-secondary fw-semibold mb-0" id="overlay-msg"></p>';
+        document.body.appendChild(el);
+    }
+    document.getElementById('overlay-msg').textContent = msg;
+    el.style.display = 'flex';
+}
+function hideOverlay() {
+    const el = document.getElementById('results-overlay');
+    if (el) el.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    showOverlay();
+    const raw = sessionStorage.getItem('analysisResults');
+    if (!raw) {
+        hideOverlay();
+        document.getElementById('no-data-msg').classList.remove('d-none');
+        return;
+    }
+    try {
+        const d = JSON.parse(raw);
+        document.getElementById('results-container').classList.remove('d-none');
+        renderCategoryCards(d.category_counts);
+        renderCategoryChart(d.category_counts);
+        renderTopIpChart(d.top_ips);
+        renderIpSummaryTable(d.ip_summary || []);
+        // [FE-STORAGE]: Render at most 1000 logs in UI (performance)
+        const logsToShow = (d.logs || []).slice(0, 1000);
+        renderDetailTable(logsToShow, (d.logs||[]).length);
+    } catch(e) {
+        console.error('Results parse error:', e);
+        document.getElementById('no-data-msg').classList.remove('d-none');
+    } finally {
+        hideOverlay();
+    }
+});
+
+// ─── Toifa kartalari ──────────────────────────────────────────────
+function renderCategoryCards(counts) {
+    const container = document.getElementById('category-cards');
+    container.innerHTML = '';
+    Object.entries(CFG).forEach(([cls, cfg]) => {
+        const val = counts[cls] || 0;
+        const col = document.createElement('div');
+        col.className = 'col-6 col-md-3';
+        const card = document.createElement('div');
+        card.className = 'card h-100 border-0 rounded-3 shadow-sm text-center py-4';
+        card.style.backgroundColor = cfg.bg;
+        // [FE-XSS-1]: textContent only — no innerHTML
+        const h5 = document.createElement('h5');
+        h5.className = 'fw-bold mb-2 text-white';
+        h5.textContent = cfg.label;
+        const h1 = document.createElement('h1');
+        h1.className = 'display-5 fw-bold mb-0 text-white';
+        h1.textContent = val;
+        card.appendChild(h5);
+        card.appendChild(h1);
+        col.appendChild(card);
+        container.appendChild(col);
+    });
+}
+
+// ─── Doiraviy diagramma ──────────────────────────────────────────
+function renderCategoryChart(counts) {
+    // [FE-NULL-1]: null guard
+    const canvas = document.getElementById('categoryChart');
+    if (!canvas) return;
+    const labels = Object.keys(CFG);
+    new Chart(canvas.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels,
+            datasets: [{ data: labels.map(l => counts[l] || 0), backgroundColor: labels.map(l => CFG[l].bg), borderWidth: 2, borderColor: '#fff' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
+    });
+}
+
+// ─── Gorizontal ustunli grafik ───────────────────────────────────
+function renderTopIpChart(topIps) {
+    const canvas = document.getElementById('topIpChart'); // [FE-NULL-1]
+    if (!canvas || !topIps || !topIps.length) return;
+    new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: topIps.map(i => i.ip),
+            datasets: [{ label: "So'rovlar soni", data: topIps.map(i => i.count), backgroundColor: topIps.map(i => CFG[i.class]?.bg || '#ccc') }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
+
+// ─── IP xulosa jadvali ───────────────────────────────────────────
+function renderIpSummaryTable(rows) {
+    // [FE-DT-1]: DataTables double-init guard
+    if ($.fn.DataTable.isDataTable('#ipSummaryTable')) {
+        $('#ipSummaryTable').DataTable().destroy();
+        document.querySelector('#ipSummaryTable tbody').innerHTML = '';
+    }
+    const tbody = document.querySelector('#ipSummaryTable tbody');
+    rows.forEach(r => {
+        const risk_bg = r.risk_score >= 60 ? 'danger' : r.risk_score >= 30 ? 'warning' : 'success';
+        const cfg = CFG[r.classification] || CFG.Normal;
+        const tr = document.createElement('tr');
+
+        // [FE-XSS-1]: DOM API — no innerHTML for data cells
+        const cells = [
+            { text: r.ip, tag: 'code', cls: 'text-dark' },
+        ];
+        // IP cell
+        const td0 = document.createElement('td');
+        const code = document.createElement('code');
+        code.className = 'text-dark'; code.textContent = r.ip;
+        td0.appendChild(code); tr.appendChild(td0);
+        // Badge cell
+        const td1 = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `badge ${cfg.badge} rounded-pill px-3`;
+        badge.textContent = r.classification;
+        td1.appendChild(badge); tr.appendChild(td1);
+        // Confidence
+        const td2 = document.createElement('td');
+        td2.innerHTML = `<div class="d-flex align-items-center gap-2"><div class="progress flex-grow-1" style="height:7px"><div class="progress-bar bg-success" style="width:${r.confidence}%"></div></div><small class="fw-bold">${r.confidence}%</small></div>`;
+        tr.appendChild(td2);
+        // Numeric cells (safe — numbers only)
+        [[r.request_count.toLocaleString(),'fw-semibold'],[`${r.error_rate_pct}%`, r.error_rate_pct > 30 ? 'text-danger fw-bold' : ''],
+         [r.sensitive_hits, r.sensitive_hits > 0 ? 'text-danger fw-bold' : 'text-muted'],
+         [r.avg_interval_sec, 'text-muted']].forEach(([val, cls]) => {
+            const td = document.createElement('td');
+            td.className = cls || '';
+            td.textContent = val;
+            tr.appendChild(td);
+        });
+        // Risk badge
+        const tdR = document.createElement('td');
+        tdR.innerHTML = `<span class="badge bg-${risk_bg} rounded-pill fs-6">${r.risk_score}/100</span>`;
+        tr.appendChild(tdR);
+
+        tbody.appendChild(tr);
+    });
+    $('#ipSummaryTable').DataTable({ language: dtLang(), order: [[7, 'desc']], pageLength: 5 });
+}
+
+// ─── Batafsil log jadvali ────────────────────────────────────────
+function renderDetailTable(logs, totalCount) {
+    // [FE-DT-1]: DataTables double-init guard
+    if ($.fn.DataTable.isDataTable('#resultsTable')) {
+        $('#resultsTable').DataTable().destroy();
+        document.querySelector('#resultsTable tbody').innerHTML = '';
+    }
+    // [FE-MEM-1]: clear the Map
+    featureDataMap.clear();
+
+    const tbody = document.querySelector('#resultsTable tbody');
+
+    // Truncation notice
+    if (totalCount > logs.length) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 8;
+        td.className = 'text-center text-warning fw-semibold py-2 small';
+        td.textContent = `⚠️ Jami ${totalCount.toLocaleString()} ta log mavjud. UI da faqat dastlabki ${logs.length.toLocaleString()} tasi ko'rsatilmoqda.`;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+    }
+
+    logs.forEach((log, index) => {
+        const mColor = {GET:'text-primary',POST:'text-success',DELETE:'text-danger',PUT:'text-warning'}[log.method] || 'text-secondary';
+        const sColor = log.status >= 400 ? 'bg-danger' : log.status >= 300 ? 'bg-warning text-dark' : 'bg-success';
+        const cfg = CFG[log.classification] || CFG.Normal;
+
+        // [FE-MEM-1]: Map instead of plain object, index key
+        featureDataMap.set(index, log.features);
+
+        const tr = document.createElement('tr');
+
+        // [FE-XSS-1]: textContent for all user-controlled data
+        const tdTime = document.createElement('td'); tdTime.className = 'text-muted small text-nowrap'; tdTime.textContent = log.timestamp;
+        const tdIp = document.createElement('td'); const codeIp = document.createElement('code'); codeIp.className = 'text-dark'; codeIp.textContent = log.ip; tdIp.appendChild(codeIp);
+        const tdMethod = document.createElement('td'); const spanM = document.createElement('span'); spanM.className = `fw-bold font-monospace ${mColor}`; spanM.textContent = log.method; tdMethod.appendChild(spanM);
+        const tdPath = document.createElement('td'); tdPath.className = 'text-muted small'; const spanP = document.createElement('span'); spanP.className = 'd-inline-block text-truncate'; spanP.style.maxWidth = '150px'; spanP.title = log.path; spanP.textContent = log.path; tdPath.appendChild(spanP);
+        const tdStatus = document.createElement('td'); tdStatus.innerHTML = `<span class="badge ${sColor} rounded-pill fs-6">${log.status}</span>`;
+        const tdCls = document.createElement('td'); tdCls.innerHTML = `<span class="badge ${cfg.badge} rounded-pill px-3 fs-6">${log.classification}</span>`;
+        const tdConf = document.createElement('td'); tdConf.innerHTML = `<div class="progress mb-1" style="height:6px;width:60px"><div class="progress-bar bg-success" style="width:${log.confidence}%"></div></div><small class="text-muted fw-bold">${log.confidence}%</small>`;
+        const tdBtn = document.createElement('td'); tdBtn.className = 'text-end';
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-sm btn-outline-primary rounded-pill px-3';
+        btn.innerHTML = '<i class="fas fa-eye me-1"></i>Ko\'rish';
+        btn.addEventListener('click', () => showFeatures(index)); // [FE-XSS-1]: event listener, no inline onclick
+        tdBtn.appendChild(btn);
+
+        [tdTime, tdIp, tdMethod, tdPath, tdStatus, tdCls, tdConf, tdBtn].forEach(td => tr.appendChild(td));
+        tbody.appendChild(tr);
+    });
+
+    $('#resultsTable').DataTable({ language: dtLang(), order: [[0,'desc']], pageLength: 20 });
+}
+
+// ─── Features Modal ──────────────────────────────────────────────
+window.showFeatures = function(index) {
+    const body = document.getElementById('featuresModalBody');
+    const feat = featureDataMap.get(index); // [FE-MEM-1]: Map.get()
+    if (!feat) {
+        body.textContent = 'Xususiyatlarni ko\'rsatib bo\'lmadi.'; // [FE-XSS-1]
+        new bootstrap.Modal(document.getElementById('featuresModal')).show();
+        return;
+    }
+
+    // Build table with DOM API (no innerHTML for data)
+    const table = document.createElement('table');
+    table.className = 'table mb-0';
+    const thead = table.createTHead();
+    const hRow = thead.insertRow();
+    ['Xususiyat','Qiymat'].forEach(h => { const th = document.createElement('th'); th.className='ps-4 text-muted small text-uppercase'; th.textContent=h; hRow.appendChild(th); });
+    const tbody = table.createTBody();
+    Object.entries(feat).forEach(([k, v]) => {
+        const row = tbody.insertRow();
+        const th = document.createElement('th'); th.className='bg-light text-secondary fw-semibold w-50 ps-4 py-3'; th.textContent=k;
+        const td = document.createElement('td'); td.className='fw-bold ps-4 py-3'; td.textContent=v;
+        row.appendChild(th); row.appendChild(td);
+    });
+
+    body.innerHTML = '';
+    const info = document.createElement('div');
+    info.className = 'alert alert-info m-3 mb-0 border-0 rounded-3 small py-2';
+    info.textContent = 'Qat\'iy qoidalar modeliga kiritilgan va tasnif uchun ishlatilgan o\'zgaruvchilar:';
+    body.appendChild(info);
+    const wrapper = document.createElement('div'); wrapper.className = 'table-responsive';
+    wrapper.appendChild(table);
+    body.appendChild(wrapper);
+
+    new bootstrap.Modal(document.getElementById('featuresModal')).show();
+};
+
+function dtLang() {
+    return {
+        search: '_INPUT_', searchPlaceholder: '🔍 Qidirish...',
+        lengthMenu: "Ko'rsatish: _MENU_",
+        info: '_TOTAL_ ta yozuvdan _START_–_END_ ko\'rsatilmoqda',
+        infoEmpty: "Yozuv yo'q", zeroRecords: 'Mos yozuv topilmadi',
+        paginate: { first:'«', last:'»', next:'›', previous:'‹' }
+    };
+}
+</script>
+<style>
+.bg-info.text-white { color: white !important; }
+</style>
+{% endblock %}

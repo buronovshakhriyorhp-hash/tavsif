@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─── Base ─────────────────────────────────── */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* ─── Navbar active link pill ───────────────── */
+.navbar-nav .nav-link.active {
+    border-radius: 0.5rem;
+}
+
+.navbar-nav .nav-link {
+    transition: background-color 0.2s ease;
+}
+
+.navbar-nav .nav-link:not(.active):hover {
+    background-color: rgba(255,255,255,0.08);
+    border-radius: 0.5rem;
+}
+
+/* ─── Cards ─────────────────────────────────── */
+.hover-lift {
+    transition: transform 0.25s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1rem 2.5rem rgba(0,0,0,.12) !important;
+}
+
+/* ─── Animations ─────────────────────────────── */
+#results-container, .animate-in {
+    animation: fadeSlideIn 0.4s ease-out;
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── DataTables polish ──────────────────────── */
+#resultsTable th {
+    white-space: nowrap;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.dataTables_filter input {
+    border-radius: 2rem !important;
+    border: 1px solid #dee2e6 !important;
+    padding: 0.35rem 1rem !important;
+    font-size: 0.9rem;
+}
+
+.dataTables_filter label { font-weight: 500; }
+
+div.dataTables_paginate ul.pagination { margin-bottom: 0; }
+
+.page-item .page-link {
+    border-radius: 0.4rem !important;
+    margin: 0 2px;
+    font-size: 0.85rem;
+}
+
+/* ─── Modal ─────────────────────────────────── */
+.modal.fade .modal-dialog {
+    transition: transform 0.25s ease-out, opacity 0.25s ease;
+    transform: scale(0.95);
+    opacity: 0;
+}
+.modal.show .modal-dialog {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* ─── Badges ─────────────────────────────────── */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+/* ─── Progress bar ───────────────────────────── */
+.progress { display: inline-flex; vertical-align: middle; }
+
+/* ─── Code blocks ────────────────────────────── */
+code {
+    background: rgba(0,0,0,0.06);
+    padding: 0.1em 0.4em;
+    border-radius: 0.3rem;
+    font-size: 0.88em;
+}
+
+/* ─── Form file input ────────────────────────── */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.18);
+    border-color: #86b7fe;
+}
+
+.rounded-top-4 { border-top-left-radius: 1rem !important; border-top-right-radius: 1rem !important; }
+.rounded-bottom-4 { border-bottom-left-radius: 1rem !important; border-bottom-right-radius: 1rem !important; }

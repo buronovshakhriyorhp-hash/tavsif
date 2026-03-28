@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Bosh Sahifa - Foydalanuvchi Tasnifi{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="py-5 animate-fade-in">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+            <h1 class="display-5 fw-bold text-dark mb-3 lh-sm">
+                Internet Foydalanuvchilarini Tasniflash
+            </h1>
+            <p class="lead text-muted mb-4" style="line-height: 1.85;">
+                Web-loglar asosida kiberxavfsizlikni ta'minlash va foydalanuvchi xatti-harakatlarini tahlil qilish uchun sun'iy intellekt tizimi.
+            </p>
+
+            <!-- Status Badges (from original site) -->
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="badge bg-success rounded-pill px-3 py-2 fs-6 shadow-sm">
+                    <i class="fas fa-user-check me-1"></i>Normal
+                </span>
+                <span class="badge bg-primary rounded-pill px-3 py-2 fs-6 shadow-sm">
+                    <i class="fas fa-bolt me-1"></i>Active
+                </span>
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fs-6 shadow-sm">
+                    <i class="fas fa-robot me-1"></i>Bot
+                </span>
+                <span class="badge bg-danger rounded-pill px-3 py-2 fs-6 shadow-sm">
+                    <i class="fas fa-user-secret me-1"></i>Attacker
+                </span>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3">
+                <a href="/upload" class="btn btn-primary btn-lg px-5 shadow-sm rounded-3 fw-semibold">
+                    <i class="fas fa-rocket me-2"></i>Tahlilni Boshlash
+                </a>
+                <a href="/about" class="btn btn-outline-secondary btn-lg px-4 rounded-3">
+                    Loyiha Haqida
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center">
+            <div class="position-relative text-center">
+                <i class="fas fa-shield-alt text-primary" style="font-size:13rem; opacity:.85; filter:drop-shadow(0 12px 24px rgba(13,110,253,.18));"></i>
+                <div class="position-absolute top-50 start-50 translate-middle">
+                    <i class="fas fa-lock text-white" style="font-size:3.5rem; opacity:.9;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Cards — original 3 cards -->
+<section class="py-4 mt-3 animate-fade-in" style="animation-delay:.1s">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <span class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
+                            <i class="fas fa-file-upload text-success fa-2x"></i>
+                        </span>
+                    </div>
+                    <h5 class="card-title fw-bold">Ma'lumot Yuklash</h5>
+                    <p class="card-text text-muted">Web-server loglarini (CSV formatda) xavfsiz yuklang va tizim avtomatik tahlil qiladi.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <span class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
+                            <i class="fas fa-brain text-primary fa-2x"></i>
+                        </span>
+                    </div>
+                    <h5 class="card-title fw-bold">AI &amp; Qoidalar</h5>
+                    <p class="card-text text-muted">Random Forest algoritmi va qat'iy xavfsizlik qoidalari (Rule-Based) yordamida aniq tasniflash.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <span class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
+                            <i class="fas fa-chart-line text-warning fa-2x"></i>
+                        </span>
+                    </div>
+                    <h5 class="card-title fw-bold">Vizual Natijalar</h5>
+                    <p class="card-text text-muted">Interaktiv diagrammalar va jadvallar orqali tarmoq holatini to'liq nazorat qiling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
