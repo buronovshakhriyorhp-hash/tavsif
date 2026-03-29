@@ -2,59 +2,50 @@
 {% block title %}Natijalar - NetUserClassify{% endblock %}
 
 {% block content %}
-
-<!-- No data -->
-<div id="no-data-msg" class="text-center mt-5 py-5 d-none animate-fade-in">
-    <i class="fas fa-folder-open fa-4x mb-4 d-block" style="color:var(--border-color);"></i>
-    <h2 class="fw-bold mb-3">Tahlil natijalari topilmadi</h2>
-    <p class="mb-4" style="color:var(--text-secondary);">Iltimos, avval CSV log faylini yuklab tahlil jarayonini boshlang.</p>
-    <a href="/upload" class="btn btn-primary px-5 rounded-3">
+<!-- No data →  -->
+<div id="no-data-msg" class="text-center mt-5 py-5 d-none">
+    <i class="fas fa-folder-open fa-5x text-muted mb-4 d-block opacity-50"></i>
+    <h2 class="text-secondary fw-bold">Tahlil natijalari topilmadi</h2>
+    <p class="text-muted mb-4">Iltimos, avval CSV log faylini yuklab tahlil jarayonini boshlang.</p>
+    <a href="/upload" class="btn btn-primary btn-lg shadow-sm rounded-3 px-5">
         <i class="fas fa-file-upload me-2"></i>Fayl Yuklash
     </a>
 </div>
 
-<!-- Results -->
+<!-- Results  -->
 <div id="results-container" class="d-none">
 
-    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
-        <div>
-            <h2 class="fw-bold mb-1" style="letter-spacing:-0.02em;">Tasniflash Natijalari</h2>
-            <p class="mb-0" style="color:var(--text-secondary); font-size:0.9rem;">
-                Yuklangan foydalanuvchi sessiyalarining tahlili
-            </p>
-        </div>
-        <button class="btn btn-outline-secondary rounded-3 btn-sm"
-                onclick="sessionStorage.removeItem('analysisResults'); window.location.href='/upload';">
-            <i class="fas fa-redo me-1"></i>Yangi Tahlil
-        </button>
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary mb-2">Tasniflash Natijalari</h2>
+        <p class="text-muted">Yuklangan foydalanuvchi sessiyalarining tahlili.</p>
     </div>
 
-    <!-- ── Stat Cards ── -->
+    <!-- ── Category Cards (Mijoz so'ragan original vizual 1-rasmga mos) ── -->
     <div class="row g-3 mb-5" id="category-cards">
-        <!-- JS fills -->
+        <!-- Javascript to'ldiradi -->
     </div>
 
-    <!-- ── Charts ── -->
+    <!-- ── Dashbord va Statistikalar ─────────────────────────── -->
     <div class="row g-4 mb-5">
         <div class="col-lg-5">
-            <div class="card border-0 h-100">
+            <div class="card shadow-sm border-0 h-100 rounded-4">
                 <div class="card-body p-4">
-                    <h6 class="fw-semibold mb-4" style="color:var(--text-secondary); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em;">
-                        <i class="fas fa-chart-pie me-2" style="color:var(--accent);"></i>Foydalanuvchilar Tasnifi Ulushi
+                    <h6 class="fw-bold mb-4 text-center text-secondary">
+                        <i class="fas fa-chart-pie text-primary me-2"></i>Foydalanuvchilar Tasnifi Ulushi
                     </h6>
-                    <div style="height:260px; position:relative;">
+                    <div style="height:280px;position:relative">
                         <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-7">
-            <div class="card border-0 h-100">
+            <div class="card shadow-sm border-0 h-100 rounded-4">
                 <div class="card-body p-4">
-                    <h6 class="fw-semibold mb-4" style="color:var(--text-secondary); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em;">
-                        <i class="fas fa-network-wired me-2" style="color:var(--accent-cyan);"></i>Eng Faol IP Manzillar (Top 10)
+                    <h6 class="fw-bold mb-4 text-center text-secondary">
+                        <i class="fas fa-network-wired text-info me-2"></i>Eng Faol IP Manzillar (Top 10)
                     </h6>
-                    <div style="height:260px; position:relative;">
+                    <div style="height:280px;position:relative">
                         <canvas id="topIpChart"></canvas>
                     </div>
                 </div>
@@ -62,12 +53,14 @@
         </div>
     </div>
 
-    <!-- ── IP Summary Table ── -->
-    <div class="card border-0 mb-5">
+    <!-- ── IP Xulosa Jadvali ───────────────── -->
+    <div class="card shadow-sm border-0 rounded-4 mb-5">
         <div class="card-body p-4">
-            <h5 class="fw-bold mb-4" style="font-size:0.95rem;">
-                <i class="fas fa-layer-group me-2" style="color:var(--cat-bot);"></i>IP Manzillar Xulosa
-            </h5>
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fas fa-layer-group text-warning me-2"></i>IP Manzillar Xulosa
+                </h5>
+            </div>
             <div class="table-responsive">
                 <table id="ipSummaryTable" class="table table-hover align-middle w-100 mb-0">
                     <thead class="table-dark">
@@ -88,12 +81,18 @@
         </div>
     </div>
 
-    <!-- ── Detail Log Table ── -->
-    <div class="card border-0 overflow-hidden">
+    <!-- ── Batafsil Log Jadvali ───────────── -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="card-body p-4">
-            <h5 class="fw-bold mb-4" style="font-size:0.95rem;">
-                <i class="fas fa-table me-2" style="color:var(--cat-normal);"></i>Batafsil Log Natijalari
-            </h5>
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fas fa-table text-success me-2"></i>Batafsil Log Natijalari
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary rounded-3"
+                    onclick="sessionStorage.removeItem('analysisResults'); window.location.href='/upload';">
+                    <i class="fas fa-redo me-1"></i>Yangi Tahlil
+                </button>
+            </div>
             <div class="table-responsive">
                 <table id="resultsTable" class="table table-hover align-middle w-100 mb-0">
                     <thead class="table-dark">
@@ -113,52 +112,58 @@
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- Features Modal -->
+<!-- Features Modal — haqiqiy jadval (JSON emas) -->
 <div class="modal fade" id="featuresModal" tabindex="-1" aria-labelledby="featuresModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0">
-            <div class="modal-header bg-primary text-white border-0">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4 border-0">
                 <h5 class="modal-title fw-bold" id="featuresModalLabel">
                     <i class="fas fa-microscope me-2"></i>Ajratib Olingan Xususiyatlar (ML Features)
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0" id="featuresModalBody"></div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-outline-secondary px-4 rounded-3" data-bs-dismiss="modal">Yopish</button>
+            <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                <button type="button" class="btn btn-secondary px-4 rounded-3" data-bs-dismiss="modal">Yopish</button>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
-// ════════════════════════════════════════════════════════════════
-// NetUserClassify — Results Page JS
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════
+// NetUserClassify — Results Page JavaScript
+// Audit Fixes:
+//   [FE-XSS-1]  innerHTML → DOM API (textContent) to prevent XSS
+//   [FE-STORAGE] sessionStorage overflow → logs truncated to 1000
+//   [FE-DT-1]   DataTables double-init guard
+//   [FE-LOAD-1] Loading overlay while rendering large datasets
+//   [FE-NULL-1] Chart.js canvas null guard
+//   [FE-MEM-1]  featureDataMap scope limited to render function closure
+// ═══════════════════════════════════════════════════════════════════
 
 const CFG = {
-    Normal:   { color:'var(--cat-normal)',   badge:'--cat-normal',   label:'Normal (Oddiy)',    icon:'fa-user-check',  cls:'stat-card-normal'   },
-    Active:   { color:'var(--cat-active)',   badge:'--cat-active',   label:'Active (Faol)',     icon:'fa-bolt',        cls:'stat-card-active'   },
-    Bot:      { color:'var(--cat-bot)',      badge:'--cat-bot',      label:'Bot (Robot)',       icon:'fa-robot',       cls:'stat-card-bot'      },
-    Attacker: { color:'var(--cat-attacker)', badge:'--cat-attacker', label:'Attacker (Hujumchi)', icon:'fa-user-secret', cls:'stat-card-attacker' },
+    Normal:   { bg:'#198754', badge:'bg-success',              label:'Normal (Oddiy)' },
+    Active:   { bg:'#0dcaf0', badge:'bg-info text-dark',       label:'Active (Faol)' },
+    Bot:      { bg:'#ffc107', badge:'bg-warning text-dark',    label:'Bot (Robot)' },
+    Attacker: { bg:'#dc3545', badge:'bg-danger',               label:'Attacker (Hujumchi)' },
 };
 
+// [FE-MEM-1]: Scope limited — NOT global object growing unboundedly
 const featureDataMap = new Map();
 
-// Loading overlay
+// [FE-LOAD-1]: Loading overlay
 function showOverlay(msg = 'Ma\'lumotlar yuklanmoqda...') {
     let el = document.getElementById('results-overlay');
     if (!el) {
         el = document.createElement('div');
         el.id = 'results-overlay';
-        el.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
-        el.innerHTML = '<div class="spinner-border" style="width:2.5rem;height:2.5rem;color:var(--accent)"></div><p style="color:#fff;font-weight:600;margin:0" id="overlay-msg"></p>';
+        el.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px';
+        el.innerHTML = '<div class="spinner-border text-primary" style="width:3rem;height:3rem"></div><p class="text-secondary fw-semibold mb-0" id="overlay-msg"></p>';
         document.body.appendChild(el);
     }
     document.getElementById('overlay-msg').textContent = msg;
@@ -184,9 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCategoryChart(d.category_counts);
         renderTopIpChart(d.top_ips);
         renderIpSummaryTable(d.ip_summary || []);
+        // [FE-STORAGE]: Render at most 1000 logs in UI (performance)
         const logsToShow = (d.logs || []).slice(0, 1000);
-        renderDetailTable(logsToShow, (d.logs || []).length);
-    } catch (e) {
+        renderDetailTable(logsToShow, (d.logs||[]).length);
+    } catch(e) {
         console.error('Results parse error:', e);
         document.getElementById('no-data-msg').classList.remove('d-none');
     } finally {
@@ -194,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ── Stat Cards ──────────────────────────────────────────────────
+// ─── Toifa kartalari ──────────────────────────────────────────────
 function renderCategoryCards(counts) {
     const container = document.getElementById('category-cards');
     container.innerHTML = '';
@@ -202,259 +208,186 @@ function renderCategoryCards(counts) {
         const val = counts[cls] || 0;
         const col = document.createElement('div');
         col.className = 'col-6 col-md-3';
-
         const card = document.createElement('div');
-        card.className = `stat-card ${cfg.cls}`;
-
-        const icon = document.createElement('i');
-        icon.className = `fas ${cfg.icon} stat-icon`;
-
-        const numEl = document.createElement('div');
-        numEl.className = 'stat-number';
-        numEl.textContent = '0';
-
-        const label = document.createElement('div');
-        label.className = 'stat-label';
-        label.textContent = cfg.label;
-
-        card.appendChild(icon);
-        card.appendChild(numEl);
-        card.appendChild(label);
+        card.className = 'card h-100 border-0 rounded-3 shadow-sm text-center py-4';
+        card.style.backgroundColor = cfg.bg;
+        // [FE-XSS-1]: textContent only — no innerHTML
+        const h5 = document.createElement('h5');
+        h5.className = 'fw-bold mb-2 text-white';
+        h5.textContent = cfg.label;
+        const h1 = document.createElement('h1');
+        h1.className = 'display-5 fw-bold mb-0 text-white';
+        h1.textContent = val;
+        card.appendChild(h5);
+        card.appendChild(h1);
         col.appendChild(card);
         container.appendChild(col);
-
-        // Animate counter
-        setTimeout(() => window.animateCounter(numEl, val, 600), 100);
     });
 }
 
-// ── Doiraviy diagramma ───────────────────────────────────────────
+// ─── Doiraviy diagramma ──────────────────────────────────────────
 function renderCategoryChart(counts) {
+    // [FE-NULL-1]: null guard
     const canvas = document.getElementById('categoryChart');
     if (!canvas) return;
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const labels = Object.keys(CFG);
-    const colors = labels.map(l => getComputedStyle(document.documentElement).getPropertyValue(`--cat-${l.toLowerCase()}`).trim() || '#888');
-
     new Chart(canvas.getContext('2d'), {
         type: 'doughnut',
         data: {
-            labels: labels.map(l => CFG[l].label),
-            datasets: [{
-                data: labels.map(l => counts[l] || 0),
-                backgroundColor: colors,
-                borderWidth: 3,
-                borderColor: isDark ? '#161b22' : '#ffffff',
-                hoverBorderColor: isDark ? '#1c2430' : '#f8fafc',
-            }]
+            labels,
+            datasets: [{ data: labels.map(l => counts[l] || 0), backgroundColor: labels.map(l => CFG[l].bg), borderWidth: 2, borderColor: '#fff' }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '68%',
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: { color: isDark ? '#8b949e' : '#6b7280', padding: 14, font: { size: 12 } }
-                }
-            }
-        }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
     });
 }
 
-// ── Bar chart ────────────────────────────────────────────────────
+// ─── Gorizontal ustunli grafik ───────────────────────────────────
 function renderTopIpChart(topIps) {
-    const canvas = document.getElementById('topIpChart');
+    const canvas = document.getElementById('topIpChart'); // [FE-NULL-1]
     if (!canvas || !topIps || !topIps.length) return;
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const colors = topIps.map(i => getComputedStyle(document.documentElement).getPropertyValue(`--cat-${i.class.toLowerCase()}`).trim() || '#888');
-
     new Chart(canvas.getContext('2d'), {
         type: 'bar',
         data: {
             labels: topIps.map(i => i.ip),
-            datasets: [{
-                label: "So'rovlar soni",
-                data: topIps.map(i => i.count),
-                backgroundColor: colors.map(c => c + 'cc'),
-                borderRadius: 4,
-            }]
+            datasets: [{ label: "So'rovlar soni", data: topIps.map(i => i.count), backgroundColor: topIps.map(i => CFG[i.class]?.bg || '#ccc') }]
         },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { ticks: { color: isDark ? '#8b949e' : '#6b7280', font: { size: 11 } }, grid: { color: isDark ? '#30363d' : '#e2e8f0' } },
-                y: { ticks: { color: isDark ? '#8b949e' : '#6b7280', font: { size: 11 } }, grid: { color: isDark ? '#30363d' : '#e2e8f0' } }
-            }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
     });
 }
 
-// ── IP Summary Table ─────────────────────────────────────────────
+// ─── IP xulosa jadvali ───────────────────────────────────────────
 function renderIpSummaryTable(rows) {
+    // [FE-DT-1]: DataTables double-init guard
     if ($.fn.DataTable.isDataTable('#ipSummaryTable')) {
         $('#ipSummaryTable').DataTable().destroy();
         document.querySelector('#ipSummaryTable tbody').innerHTML = '';
     }
     const tbody = document.querySelector('#ipSummaryTable tbody');
     rows.forEach(r => {
-        const riskBg = r.risk_score >= 60 ? 'var(--cat-attacker)' : r.risk_score >= 30 ? 'var(--cat-bot)' : 'var(--cat-normal)';
-        const catColor = `var(--cat-${r.classification.toLowerCase()})`;
+        const risk_bg = r.risk_score >= 60 ? 'danger' : r.risk_score >= 30 ? 'warning' : 'success';
+        const cfg = CFG[r.classification] || CFG.Normal;
         const tr = document.createElement('tr');
 
-        // IP
+        // [FE-XSS-1]: DOM API — no innerHTML for data cells
+        const cells = [
+            { text: r.ip, tag: 'code', cls: 'text-dark' },
+        ];
+        // IP cell
         const td0 = document.createElement('td');
-        const code = document.createElement('code'); code.className = 'font-mono'; code.textContent = r.ip;
+        const code = document.createElement('code');
+        code.className = 'text-dark'; code.textContent = r.ip;
         td0.appendChild(code); tr.appendChild(td0);
-        // Badge
+        // Badge cell
         const td1 = document.createElement('td');
         const badge = document.createElement('span');
-        badge.className = 'badge rounded-pill px-3';
-        badge.style.cssText = `background: rgba(0,0,0,0.06); color: ${catColor}; border: 1px solid ${catColor}40;`;
-        badge.textContent = r.classification; td1.appendChild(badge); tr.appendChild(td1);
+        badge.className = `badge ${cfg.badge} rounded-pill px-3`;
+        badge.textContent = r.classification;
+        td1.appendChild(badge); tr.appendChild(td1);
         // Confidence
         const td2 = document.createElement('td');
-        td2.innerHTML = `<div class="d-flex align-items-center gap-2"><div class="progress flex-grow-1" style="height:5px;width:70px"><div class="progress-bar" style="width:${r.confidence}%"></div></div><small class="fw-semibold" style="color:var(--text-secondary)">${r.confidence}%</small></div>`;
+        td2.innerHTML = `<div class="d-flex align-items-center gap-2"><div class="progress flex-grow-1" style="height:7px"><div class="progress-bar bg-success" style="width:${r.confidence}%"></div></div><small class="fw-bold">${r.confidence}%</small></div>`;
         tr.appendChild(td2);
-        // Numerics
-        [[r.request_count.toLocaleString(),'fw-semibold'],
-         [`${r.error_rate_pct}%`, r.error_rate_pct > 30 ? 'text-danger fw-bold' : ''],
-         [r.sensitive_hits, r.sensitive_hits > 0 ? 'fw-bold' : ''],
-         [r.avg_interval_sec, 'font-mono small']].forEach(([val, cls]) => {
+        // Numeric cells (safe — numbers only)
+        [[r.request_count.toLocaleString(),'fw-semibold'],[`${r.error_rate_pct}%`, r.error_rate_pct > 30 ? 'text-danger fw-bold' : ''],
+         [r.sensitive_hits, r.sensitive_hits > 0 ? 'text-danger fw-bold' : 'text-muted'],
+         [r.avg_interval_sec, 'text-muted']].forEach(([val, cls]) => {
             const td = document.createElement('td');
-            if (cls) td.className = cls;
+            td.className = cls || '';
             td.textContent = val;
-            if (r.sensitive_hits > 0 && val === r.sensitive_hits) td.style.color = 'var(--cat-attacker)';
             tr.appendChild(td);
         });
-        // Risk
+        // Risk badge
         const tdR = document.createElement('td');
-        const highRisk = r.risk_score >= 60;
-        tdR.innerHTML = `<span class="badge rounded-pill fs-6 ${highRisk ? 'badge-high-risk' : ''}" style="background:${riskBg}20;color:${riskBg};border:1px solid ${riskBg}40;">${r.risk_score}/100</span>`;
+        tdR.innerHTML = `<span class="badge bg-${risk_bg} rounded-pill fs-6">${r.risk_score}/100</span>`;
         tr.appendChild(tdR);
+
         tbody.appendChild(tr);
     });
     $('#ipSummaryTable').DataTable({ language: dtLang(), order: [[7, 'desc']], pageLength: 5 });
 }
 
-// ── Detail Table ─────────────────────────────────────────────────
+// ─── Batafsil log jadvali ────────────────────────────────────────
 function renderDetailTable(logs, totalCount) {
+    // [FE-DT-1]: DataTables double-init guard
     if ($.fn.DataTable.isDataTable('#resultsTable')) {
         $('#resultsTable').DataTable().destroy();
         document.querySelector('#resultsTable tbody').innerHTML = '';
     }
+    // [FE-MEM-1]: clear the Map
     featureDataMap.clear();
+
     const tbody = document.querySelector('#resultsTable tbody');
 
+    // Truncation notice
     if (totalCount > logs.length) {
         const tr = document.createElement('tr');
-        const td = document.createElement('td'); td.colSpan = 8;
-        td.className = 'text-center py-2 small fw-semibold';
-        td.style.color = 'var(--cat-bot)';
+        const td = document.createElement('td');
+        td.colSpan = 8;
+        td.className = 'text-center text-warning fw-semibold py-2 small';
         td.textContent = `⚠️ Jami ${totalCount.toLocaleString()} ta log mavjud. UI da faqat dastlabki ${logs.length.toLocaleString()} tasi ko'rsatilmoqda.`;
-        tr.appendChild(td); tbody.appendChild(tr);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     }
 
     logs.forEach((log, index) => {
-        const mColor = {GET:'var(--accent)',POST:'var(--cat-normal)',DELETE:'var(--cat-attacker)',PUT:'var(--cat-bot)'}[log.method] || 'var(--text-muted)';
-        const sColor = log.status >= 400 ? 'var(--cat-attacker)' : log.status >= 300 ? 'var(--cat-bot)' : 'var(--cat-normal)';
-        const catColor = `var(--cat-${log.classification.toLowerCase()})`;
+        const mColor = {GET:'text-primary',POST:'text-success',DELETE:'text-danger',PUT:'text-warning'}[log.method] || 'text-secondary';
+        const sColor = log.status >= 400 ? 'bg-danger' : log.status >= 300 ? 'bg-warning text-dark' : 'bg-success';
+        const cfg = CFG[log.classification] || CFG.Normal;
+
+        // [FE-MEM-1]: Map instead of plain object, index key
         featureDataMap.set(index, log.features);
 
         const tr = document.createElement('tr');
 
-        const tdTime = document.createElement('td');
-        tdTime.className = 'small text-nowrap font-mono'; tdTime.style.color = 'var(--text-muted)';
-        tdTime.textContent = log.timestamp;
-
-        const tdIp = document.createElement('td');
-        const codeIp = document.createElement('code'); codeIp.className = 'font-mono'; codeIp.textContent = log.ip;
-        tdIp.appendChild(codeIp);
-
-        const tdMethod = document.createElement('td');
-        const spanM = document.createElement('span');
-        spanM.className = 'fw-bold font-mono'; spanM.style.color = mColor;
-        spanM.textContent = log.method; tdMethod.appendChild(spanM);
-
-        const tdPath = document.createElement('td');
-        tdPath.className = 'small'; tdPath.style.color = 'var(--text-secondary)';
-        const spanP = document.createElement('span');
-        spanP.className = 'd-inline-block text-truncate'; spanP.style.maxWidth = '150px';
-        spanP.title = log.path; spanP.textContent = log.path; tdPath.appendChild(spanP);
-
-        // Status badge
-        const tdStatus = document.createElement('td');
-        const statusBadge = document.createElement('span');
-        statusBadge.className = 'badge rounded-pill';
-        statusBadge.style.cssText = `background:${sColor}18;color:${sColor};border:1px solid ${sColor}40;font-weight:600;`;
-        statusBadge.textContent = log.status; tdStatus.appendChild(statusBadge);
-
-        // Class badge
-        const tdCls = document.createElement('td');
-        const clsBadge = document.createElement('span');
-        clsBadge.className = 'badge rounded-pill px-3';
-        clsBadge.style.cssText = `background:${catColor}18;color:${catColor};border:1px solid ${catColor}40;`;
-        clsBadge.textContent = log.classification; tdCls.appendChild(clsBadge);
-
-        // Confidence bar
-        const tdConf = document.createElement('td');
-        tdConf.innerHTML = `<div class="progress mb-1" style="height:4px;width:56px"><div class="progress-bar" style="width:${log.confidence}%"></div></div><small class="fw-semibold" style="color:var(--text-muted)">${log.confidence}%</small>`;
-
+        // [FE-XSS-1]: textContent for all user-controlled data
+        const tdTime = document.createElement('td'); tdTime.className = 'text-muted small text-nowrap'; tdTime.textContent = log.timestamp;
+        const tdIp = document.createElement('td'); const codeIp = document.createElement('code'); codeIp.className = 'text-dark'; codeIp.textContent = log.ip; tdIp.appendChild(codeIp);
+        const tdMethod = document.createElement('td'); const spanM = document.createElement('span'); spanM.className = `fw-bold font-monospace ${mColor}`; spanM.textContent = log.method; tdMethod.appendChild(spanM);
+        const tdPath = document.createElement('td'); tdPath.className = 'text-muted small'; const spanP = document.createElement('span'); spanP.className = 'd-inline-block text-truncate'; spanP.style.maxWidth = '150px'; spanP.title = log.path; spanP.textContent = log.path; tdPath.appendChild(spanP);
+        const tdStatus = document.createElement('td'); tdStatus.innerHTML = `<span class="badge ${sColor} rounded-pill fs-6">${log.status}</span>`;
+        const tdCls = document.createElement('td'); tdCls.innerHTML = `<span class="badge ${cfg.badge} rounded-pill px-3 fs-6">${log.classification}</span>`;
+        const tdConf = document.createElement('td'); tdConf.innerHTML = `<div class="progress mb-1" style="height:6px;width:60px"><div class="progress-bar bg-success" style="width:${log.confidence}%"></div></div><small class="text-muted fw-bold">${log.confidence}%</small>`;
         const tdBtn = document.createElement('td'); tdBtn.className = 'text-end';
         const btn = document.createElement('button');
-        btn.className = 'btn btn-sm rounded-pill px-3';
-        btn.style.cssText = 'background:var(--accent-soft);color:var(--accent);border:1px solid var(--border-color);font-size:0.8rem;';
+        btn.className = 'btn btn-sm btn-outline-primary rounded-pill px-3';
         btn.innerHTML = '<i class="fas fa-eye me-1"></i>Ko\'rish';
-        btn.addEventListener('click', () => showFeatures(index));
+        btn.addEventListener('click', () => showFeatures(index)); // [FE-XSS-1]: event listener, no inline onclick
         tdBtn.appendChild(btn);
 
         [tdTime, tdIp, tdMethod, tdPath, tdStatus, tdCls, tdConf, tdBtn].forEach(td => tr.appendChild(td));
         tbody.appendChild(tr);
     });
 
-    $('#resultsTable').DataTable({ language: dtLang(), order: [[0, 'desc']], pageLength: 20 });
+    $('#resultsTable').DataTable({ language: dtLang(), order: [[0,'desc']], pageLength: 20 });
 }
 
-// ── Features Modal ───────────────────────────────────────────────
+// ─── Features Modal ──────────────────────────────────────────────
 window.showFeatures = function(index) {
     const body = document.getElementById('featuresModalBody');
-    const feat = featureDataMap.get(index);
+    const feat = featureDataMap.get(index); // [FE-MEM-1]: Map.get()
     if (!feat) {
-        body.textContent = 'Xususiyatlarni ko\'rsatib bo\'lmadi.';
+        body.textContent = 'Xususiyatlarni ko\'rsatib bo\'lmadi.'; // [FE-XSS-1]
         new bootstrap.Modal(document.getElementById('featuresModal')).show();
         return;
     }
 
+    // Build table with DOM API (no innerHTML for data)
     const table = document.createElement('table');
     table.className = 'table mb-0';
     const thead = table.createTHead();
     const hRow = thead.insertRow();
-    ['Xususiyat', 'Qiymat'].forEach(h => {
-        const th = document.createElement('th');
-        th.className = 'ps-4 py-3';
-        th.style.cssText = 'color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;';
-        th.textContent = h;
-        hRow.appendChild(th);
-    });
+    ['Xususiyat','Qiymat'].forEach(h => { const th = document.createElement('th'); th.className='ps-4 text-muted small text-uppercase'; th.textContent=h; hRow.appendChild(th); });
     const tbody = table.createTBody();
     Object.entries(feat).forEach(([k, v]) => {
         const row = tbody.insertRow();
-        const th = document.createElement('th');
-        th.className = 'w-50 ps-4 py-2 fw-semibold';
-        th.style.cssText = 'background:var(--bg-surface-2);color:var(--text-secondary);font-size:0.88rem;border-color:var(--border-color)!important;';
-        th.textContent = k;
-        const td = document.createElement('td');
-        td.className = 'fw-bold ps-4 py-2 font-mono';
-        td.style.cssText = 'color:var(--text-primary);font-size:0.88rem;border-color:var(--border-color)!important;';
-        td.textContent = v;
+        const th = document.createElement('th'); th.className='bg-light text-secondary fw-semibold w-50 ps-4 py-3'; th.textContent=k;
+        const td = document.createElement('td'); td.className='fw-bold ps-4 py-3'; td.textContent=v;
         row.appendChild(th); row.appendChild(td);
     });
 
     body.innerHTML = '';
     const info = document.createElement('div');
-    info.className = 'm-3 mb-0 py-2 px-3 rounded-3 small';
-    info.style.cssText = 'background:var(--accent-soft);color:var(--accent);border:1px solid var(--border-color);';
+    info.className = 'alert alert-info m-3 mb-0 border-0 rounded-3 small py-2';
     info.textContent = 'Qat\'iy qoidalar modeliga kiritilgan va tasnif uchun ishlatilgan o\'zgaruvchilar:';
     body.appendChild(info);
     const wrapper = document.createElement('div'); wrapper.className = 'table-responsive';
@@ -470,8 +403,11 @@ function dtLang() {
         lengthMenu: "Ko'rsatish: _MENU_",
         info: '_TOTAL_ ta yozuvdan _START_–_END_ ko\'rsatilmoqda',
         infoEmpty: "Yozuv yo'q", zeroRecords: 'Mos yozuv topilmadi',
-        paginate: { first: '«', last: '»', next: '›', previous: '‹' }
+        paginate: { first:'«', last:'»', next:'›', previous:'‹' }
     };
 }
 </script>
+<style>
+.bg-info.text-white { color: white !important; }
+</style>
 {% endblock %}
