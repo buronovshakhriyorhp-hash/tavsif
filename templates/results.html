@@ -27,7 +27,7 @@
 
     <!-- ── Dashbord va Statistikalar ─────────────────────────── -->
     <div class="row g-4 mb-5">
-        <div class="col-lg-5">
+        <div class="col-lg-5" data-aos="fade-up">
             <div class="card shadow-sm border-0 h-100 rounded-4">
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-4 text-center text-secondary">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
             <div class="card shadow-sm border-0 h-100 rounded-4">
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-4 text-center text-secondary">
@@ -54,16 +54,16 @@
     </div>
 
     <!-- ── IP Xulosa Jadvali ───────────────── -->
-    <div class="card shadow-sm border-0 rounded-4 mb-5">
+    <div class="card shadow-sm border-0 rounded-4 mb-5" data-aos="fade-up">
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <h5 class="fw-bold text-dark mb-0">
                     <i class="fas fa-layer-group text-warning me-2"></i>IP Manzillar Xulosa
                 </h5>
             </div>
-            <div class="table-responsive">
-                <table id="ipSummaryTable" class="table table-hover align-middle w-100 mb-0">
-                    <thead class="table-dark">
+            <div class="table-responsive px-2 pb-2">
+                <table id="ipSummaryTable" class="table table-wow align-middle w-100 mb-0">
+                    <thead class="bg-light text-secondary text-uppercase" style="letter-spacing: 0.05em; font-size: 0.85rem;">
                         <tr>
                             <th>IP Manzil</th>
                             <th>Sinf</th>
@@ -82,7 +82,7 @@
     </div>
 
     <!-- ── Batafsil Log Jadvali ───────────── -->
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden" data-aos="fade-up">
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <h5 class="fw-bold text-dark mb-0">
@@ -93,9 +93,9 @@
                     <i class="fas fa-redo me-1"></i>Yangi Tahlil
                 </button>
             </div>
-            <div class="table-responsive">
-                <table id="resultsTable" class="table table-hover align-middle w-100 mb-0">
-                    <thead class="table-dark">
+            <div class="table-responsive px-2 pb-2">
+                <table id="resultsTable" class="table table-wow align-middle w-100 mb-0">
+                    <thead class="bg-light text-secondary text-uppercase" style="letter-spacing: 0.05em; font-size: 0.85rem;">
                         <tr>
                             <th>Vaqt</th>
                             <th>IP Manzil</th>
@@ -118,7 +118,7 @@
 <div class="modal fade" id="featuresModal" tabindex="-1" aria-labelledby="featuresModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header bg-primary text-white rounded-top-4 border-0">
+            <div class="modal-header text-white rounded-top-4 border-0 shadow-sm" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
                 <h5 class="modal-title fw-bold" id="featuresModalLabel">
                     <i class="fas fa-microscope me-2"></i>Ajratib Olingan Xususiyatlar (ML Features)
                 </h5>
@@ -147,10 +147,10 @@
 // ═══════════════════════════════════════════════════════════════════
 
 const CFG = {
-    Normal:   { bg:'#198754', badge:'bg-success',              label:'Normal (Oddiy)' },
-    Active:   { bg:'#0dcaf0', badge:'bg-info text-dark',       label:'Active (Faol)' },
-    Bot:      { bg:'#ffc107', badge:'bg-warning text-dark',    label:'Bot (Robot)' },
-    Attacker: { bg:'#dc3545', badge:'bg-danger',               label:'Attacker (Hujumchi)' },
+    Normal:   { bg:'linear-gradient(135deg, #10b981 0%, #059669 100%)', chartBg: '#10b981', badge:'badge-glass-success', label:'Normal (Oddiy)', shadow:'rgba(16,185,129,0.3)' },
+    Active:   { bg:'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', chartBg: '#3b82f6', badge:'badge-glass-primary', label:'Active (Faol)', shadow:'rgba(59,130,246,0.3)' },
+    Bot:      { bg:'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', chartBg: '#f59e0b', badge:'badge-glass-warning', label:'Bot (Robot)', shadow:'rgba(245,158,11,0.3)' },
+    Attacker: { bg:'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', chartBg: '#ef4444', badge:'badge-glass-danger',  label:'Attacker (Hujumchi)', shadow:'rgba(239,68,68,0.3)' },
 };
 
 // [FE-MEM-1]: Scope limited — NOT global object growing unboundedly
@@ -204,24 +204,62 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderCategoryCards(counts) {
     const container = document.getElementById('category-cards');
     container.innerHTML = '';
+    let delayCounter = 0;
     Object.entries(CFG).forEach(([cls, cfg]) => {
         const val = counts[cls] || 0;
         const col = document.createElement('div');
         col.className = 'col-6 col-md-3';
+        col.setAttribute('data-aos', 'fade-down');
+        col.setAttribute('data-aos-delay', (delayCounter * 100).toString());
+        delayCounter++;
         const card = document.createElement('div');
-        card.className = 'card h-100 border-0 rounded-3 shadow-sm text-center py-4';
-        card.style.backgroundColor = cfg.bg;
+        card.className = 'metric-card-wow h-100 text-center py-4 px-3 shadow-lg';
+        card.style.background = cfg.bg;
+        // card.style.boxShadow = `0 15px 35px ${cfg.shadow}`; // metric-card-wow handles it beautifully, wait let's keep coloured shadow
+        card.style.boxShadow = `0 15px 30px -5px ${cfg.shadow}`;
+        card.style.border = '1px solid rgba(255,255,255,0.2)';
+        
+        let faIcon = 'fa-chart-pie';
+        if(cls === 'Normal') faIcon = 'fa-user-check';
+        if(cls === 'Active') faIcon = 'fa-bolt';
+        if(cls === 'Bot') faIcon = 'fa-robot';
+        if(cls === 'Attacker') faIcon = 'fa-user-secret';
+        
+        const iconBg = document.createElement('i');
+        iconBg.className = `fas ${faIcon} metric-icon-bg text-white`;
+        card.appendChild(iconBg);
+
         // [FE-XSS-1]: textContent only — no innerHTML
         const h5 = document.createElement('h5');
-        h5.className = 'fw-bold mb-2 text-white';
+        h5.className = 'fw-bold mb-2 text-white position-relative';
+        h5.style.textShadow = '0 2px 4px rgba(0,0,0,0.2)';
         h5.textContent = cfg.label;
         const h1 = document.createElement('h1');
-        h1.className = 'display-5 fw-bold mb-0 text-white';
-        h1.textContent = val;
+        h1.className = 'display-4 fw-bold mb-0 text-white position-relative';
+        h1.style.textShadow = '0 2px 8px rgba(0,0,0,0.3)';
+        h1.textContent = "0"; // boshlang'ich qiymat
         card.appendChild(h5);
         card.appendChild(h1);
         col.appendChild(card);
         container.appendChild(col);
+
+        // Counter animatsiyasi
+        if (val > 0) {
+            let startTimestamp = null;
+            const duration = 1500;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const easeOut = progress * (2 - progress);
+                h1.textContent = Math.floor(easeOut * val);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    h1.textContent = val;
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
     });
 }
 
@@ -235,7 +273,7 @@ function renderCategoryChart(counts) {
         type: 'doughnut',
         data: {
             labels,
-            datasets: [{ data: labels.map(l => counts[l] || 0), backgroundColor: labels.map(l => CFG[l].bg), borderWidth: 2, borderColor: '#fff' }]
+            datasets: [{ data: labels.map(l => counts[l] || 0), backgroundColor: labels.map(l => CFG[l].chartBg), borderWidth: 2, borderColor: '#fff' }]
         },
         options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
     });
@@ -249,7 +287,7 @@ function renderTopIpChart(topIps) {
         type: 'bar',
         data: {
             labels: topIps.map(i => i.ip),
-            datasets: [{ label: "So'rovlar soni", data: topIps.map(i => i.count), backgroundColor: topIps.map(i => CFG[i.class]?.bg || '#ccc') }]
+            datasets: [{ label: "So'rovlar soni", data: topIps.map(i => i.count), backgroundColor: topIps.map(i => CFG[i.class]?.chartBg || '#ccc') }]
         },
         options: { responsive: true, maintainAspectRatio: false }
     });
@@ -298,7 +336,7 @@ function renderIpSummaryTable(rows) {
         });
         // Risk badge
         const tdR = document.createElement('td');
-        tdR.innerHTML = `<span class="badge bg-${risk_bg} rounded-pill fs-6">${r.risk_score}/100</span>`;
+        tdR.innerHTML = `<span class="badge badge-glass-${risk_bg} rounded-pill px-3 py-1 fs-6">${r.risk_score}/100</span>`;
         tr.appendChild(tdR);
 
         tbody.appendChild(tr);
@@ -331,7 +369,7 @@ function renderDetailTable(logs, totalCount) {
 
     logs.forEach((log, index) => {
         const mColor = {GET:'text-primary',POST:'text-success',DELETE:'text-danger',PUT:'text-warning'}[log.method] || 'text-secondary';
-        const sColor = log.status >= 400 ? 'bg-danger' : log.status >= 300 ? 'bg-warning text-dark' : 'bg-success';
+        const sColor = log.status >= 400 ? 'badge-glass-danger' : log.status >= 300 ? 'badge-glass-warning' : 'badge-glass-success';
         const cfg = CFG[log.classification] || CFG.Normal;
 
         // [FE-MEM-1]: Map instead of plain object, index key
@@ -340,16 +378,16 @@ function renderDetailTable(logs, totalCount) {
         const tr = document.createElement('tr');
 
         // [FE-XSS-1]: textContent for all user-controlled data
-        const tdTime = document.createElement('td'); tdTime.className = 'text-muted small text-nowrap'; tdTime.textContent = log.timestamp;
-        const tdIp = document.createElement('td'); const codeIp = document.createElement('code'); codeIp.className = 'text-dark'; codeIp.textContent = log.ip; tdIp.appendChild(codeIp);
+        const tdTime = document.createElement('td'); tdTime.className = 'text-muted fw-medium small text-nowrap'; tdTime.textContent = log.timestamp;
+        const tdIp = document.createElement('td'); const codeIp = document.createElement('code'); codeIp.className = 'text-dark bg-light px-2 py-1 rounded-3'; codeIp.textContent = log.ip; tdIp.appendChild(codeIp);
         const tdMethod = document.createElement('td'); const spanM = document.createElement('span'); spanM.className = `fw-bold font-monospace ${mColor}`; spanM.textContent = log.method; tdMethod.appendChild(spanM);
-        const tdPath = document.createElement('td'); tdPath.className = 'text-muted small'; const spanP = document.createElement('span'); spanP.className = 'd-inline-block text-truncate'; spanP.style.maxWidth = '150px'; spanP.title = log.path; spanP.textContent = log.path; tdPath.appendChild(spanP);
-        const tdStatus = document.createElement('td'); tdStatus.innerHTML = `<span class="badge ${sColor} rounded-pill fs-6">${log.status}</span>`;
+        const tdPath = document.createElement('td'); tdPath.className = 'text-muted small fw-medium'; const spanP = document.createElement('span'); spanP.className = 'd-inline-block text-truncate'; spanP.style.maxWidth = '150px'; spanP.title = log.path; spanP.textContent = log.path; tdPath.appendChild(spanP);
+        const tdStatus = document.createElement('td'); tdStatus.innerHTML = `<span class="badge ${sColor} rounded-pill px-3 py-1 fs-6">${log.status}</span>`;
         const tdCls = document.createElement('td'); tdCls.innerHTML = `<span class="badge ${cfg.badge} rounded-pill px-3 fs-6">${log.classification}</span>`;
         const tdConf = document.createElement('td'); tdConf.innerHTML = `<div class="progress mb-1" style="height:6px;width:60px"><div class="progress-bar bg-success" style="width:${log.confidence}%"></div></div><small class="text-muted fw-bold">${log.confidence}%</small>`;
         const tdBtn = document.createElement('td'); tdBtn.className = 'text-end';
         const btn = document.createElement('button');
-        btn.className = 'btn btn-sm btn-outline-primary rounded-pill px-3';
+        btn.className = 'btn btn-sm btn-premium-outline rounded-pill px-3 shadow-sm';
         btn.innerHTML = '<i class="fas fa-eye me-1"></i>Ko\'rish';
         btn.addEventListener('click', () => showFeatures(index)); // [FE-XSS-1]: event listener, no inline onclick
         tdBtn.appendChild(btn);

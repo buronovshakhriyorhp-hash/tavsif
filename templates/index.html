@@ -4,10 +4,13 @@
 
 {% block content %}
 
+<!-- Particles Background -->
+<div id="particles-js" class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 0; pointer-events: none;"></div>
+
 <!-- Hero Section -->
-<section class="py-5 animate-fade-in">
+<section class="py-5 position-relative" style="z-index: 1;">
     <div class="row align-items-center g-5">
-        <div class="col-lg-7">
+        <div class="col-lg-7" data-aos="fade-right">
             <h1 class="display-5 fw-bold text-dark mb-3 lh-sm">
                 Internet Foydalanuvchilarini Tasniflash
             </h1>
@@ -15,33 +18,33 @@
                 Web-loglar asosida kiberxavfsizlikni ta'minlash va foydalanuvchi xatti-harakatlarini tahlil qilish uchun sun'iy intellekt tizimi.
             </p>
 
-            <!-- Status Badges (from original site) -->
-            <div class="d-flex flex-wrap gap-2 mb-4">
-                <span class="badge bg-success rounded-pill px-3 py-2 fs-6 shadow-sm">
-                    <i class="fas fa-user-check me-1"></i>Normal
+            <!-- Status Badges (WOW Level) -->
+            <div class="d-flex flex-wrap gap-2 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <span class="badge badge-glass-success pulse-badge-success rounded-pill px-4 py-2 fs-6">
+                    <i class="fas fa-user-check me-2"></i>Normal
                 </span>
-                <span class="badge bg-primary rounded-pill px-3 py-2 fs-6 shadow-sm">
-                    <i class="fas fa-bolt me-1"></i>Active
+                <span class="badge badge-glass-primary pulse-badge-primary rounded-pill px-4 py-2 fs-6">
+                    <i class="fas fa-bolt me-2"></i>Active
                 </span>
-                <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fs-6 shadow-sm">
-                    <i class="fas fa-robot me-1"></i>Bot
+                <span class="badge badge-glass-warning pulse-badge-warning rounded-pill px-4 py-2 fs-6">
+                    <i class="fas fa-robot me-2"></i>Bot
                 </span>
-                <span class="badge bg-danger rounded-pill px-3 py-2 fs-6 shadow-sm">
-                    <i class="fas fa-user-secret me-1"></i>Attacker
+                <span class="badge badge-glass-danger pulse-badge-danger rounded-pill px-4 py-2 fs-6">
+                    <i class="fas fa-user-secret me-2"></i>Attacker
                 </span>
             </div>
 
-            <div class="d-flex flex-wrap gap-3">
-                <a href="/upload" class="btn btn-primary btn-lg px-5 shadow-sm rounded-3 fw-semibold">
+            <div class="d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="300">
+                <a href="/upload" class="btn btn-wow-primary btn-lg px-5 py-3 rounded-pill">
                     <i class="fas fa-rocket me-2"></i>Tahlilni Boshlash
                 </a>
-                <a href="/about" class="btn btn-outline-secondary btn-lg px-4 rounded-3">
+                <a href="/about" class="btn btn-premium-outline btn-lg px-5 py-3 rounded-pill fw-semibold bg-white shadow-sm">
                     Loyiha Haqida
                 </a>
             </div>
         </div>
 
-        <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center">
+        <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center" data-aos="fade-left" data-aos-delay="200">
             <div class="position-relative text-center">
                 <i class="fas fa-shield-alt text-primary" style="font-size:13rem; opacity:.85; filter:drop-shadow(0 12px 24px rgba(13,110,253,.18));"></i>
                 <div class="position-absolute top-50 start-50 translate-middle">
@@ -53,50 +56,72 @@
 </section>
 
 <!-- Feature Cards — original 3 cards -->
-<section class="py-4 mt-3 animate-fade-in" style="animation-delay:.1s">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
-                <div class="card-body p-4 text-center">
-                    <div class="mb-3">
-                        <span class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
-                            <i class="fas fa-file-upload text-success fa-2x"></i>
-                        </span>
+<section class="py-5 mt-4 position-relative z-index-1">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Xususiyat 1 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-wow h-100 text-center p-5">
+                    <div class="mb-4 card-wow-icon-wrapper">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle" style="width: 80px; height: 80px;">
+                            <i class="fas fa-file-csv fs-2"></i>
+                        </div>
                     </div>
-                    <h5 class="card-title fw-bold">Ma'lumot Yuklash</h5>
-                    <p class="card-text text-muted">Web-server loglarini (CSV formatda) xavfsiz yuklang va tizim avtomatik tahlil qiladi.</p>
+                    <h4 class="fw-bold mb-3">Ma'lumot Yuklash</h4>
+                    <p class="text-muted mb-0">Web-server loglarini (CSV formatda) xavfsiz yuklang va tizim avtomatik tahlil qiladi.</p>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
-                <div class="card-body p-4 text-center">
-                    <div class="mb-3">
-                        <span class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
-                            <i class="fas fa-brain text-primary fa-2x"></i>
-                        </span>
+            <!-- Xususiyat 2 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-wow h-100 text-center p-5">
+                    <div class="mb-4 card-wow-icon-wrapper">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 80px; height: 80px;">
+                            <i class="fas fa-brain fs-2"></i>
+                        </div>
                     </div>
-                    <h5 class="card-title fw-bold">AI &amp; Qoidalar</h5>
-                    <p class="card-text text-muted">Random Forest algoritmi va qat'iy xavfsizlik qoidalari (Rule-Based) yordamida aniq tasniflash.</p>
+                    <h4 class="fw-bold mb-3">AI & Qoidalar</h4>
+                    <p class="text-muted mb-0">Random Forest algoritmi va qat'iy xavfsizlik qoidalari (Rule-Based) yordamida aniq tasniflash.</p>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift">
-                <div class="card-body p-4 text-center">
-                    <div class="mb-3">
-                        <span class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle" style="width:64px;height:64px;">
-                            <i class="fas fa-chart-line text-warning fa-2x"></i>
-                        </span>
+            <!-- Xususiyat 3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-wow h-100 text-center p-5">
+                    <div class="mb-4 card-wow-icon-wrapper">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle" style="width: 80px; height: 80px;">
+                            <i class="fas fa-chart-line fs-2"></i>
+                        </div>
                     </div>
-                    <h5 class="card-title fw-bold">Vizual Natijalar</h5>
-                    <p class="card-text text-muted">Interaktiv diagrammalar va jadvallar orqali tarmoq holatini to'liq nazorat qiling.</p>
+                    <h4 class="fw-bold mb-3">Vizual Natijalar</h4>
+                    <p class="text-muted mb-0">Interaktiv diagrammalar va jadvallar orqali tarmoq holatini to'liq nazorat qiling.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize Particles.js
+    if (document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#0d6efd" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#0d6efd", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } }, "push": { "particles_nb": 2 } }
+            },
+            "retina_detect": true
+        });
+    }
+</script>
 {% endblock %}
